@@ -1,0 +1,5 @@
+[all-features]
+
+[report]
+out = ["Html", "Xml"]
+output-dir = "coverage"
