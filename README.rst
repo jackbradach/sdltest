@@ -6,8 +6,14 @@ I started with some Python to load some sprite assests from
 a directory and cycle through the animations.  End goal is
 to replicate the Python+SDL funcionality in Rust+SDL.
 
-Python:
-$ cd python; poetry run sdltest
+Python
+------
+Run:
 
-Rust:
-N/A yet.
+$ poetry run sdltest
+
+Rust
+----
+Coverage:
+
+$ cargo tarpaulin

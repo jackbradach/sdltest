@@ -1,14 +1,15 @@
-// extern crate sdl2; 
 
 // use std::time::Duration;
-use std::fs::{DirEntry, File, read_dir};
+use std::fs::{DirEntry, File, ReadDir, read_dir};
 use std::error;
 use std::io;
 use std::env::current_dir;
 // use std::io::prelude::*;
-use std::path::Path;
+use std::path::{Path,PathBuf};
 // use strum::AsStaticRef;
 
+extern crate sdl2;
+use sdl2::image::LoadSurface;
 
 enum Action {
     Attack,
@@ -31,6 +32,10 @@ struct ActionImages {
     // action: Action,
 }
 
+/*
+    Hashmap<name, Vec<Surface>>
+
+*/
 
 /* Create an ActionImages from an assesst directory.
  * The directory is expected to have one-or-more of
@@ -45,14 +50,17 @@ impl ActionImages {
     }
 }
 
-fn get_actionimages_file_list(path: &Path) -> Result<(), io::Error> {
+/* Get an iterator of DirEntry (eg, a ReadDir) instances for the contents
+ * of the given path.
+ * 
+ * Returns io::Errs for a bad directory, otherwise all valid images found
+ * get returned in a Vec<PathBuf>.
+ */
+// TODO - make this return validated File objects.
+fn get_actionimages_file_list(path: &Path) -> io::Result<Vec<PathBuf>> {
     let path = current_dir()?.as_path().join(path);
-    println!("path: {:?}", path);
-    for entry in read_dir(path)? {
-        let entry = entry?;
-        println!("entry: {:?}", entry);
-    }
-    Ok(())
+    let entries = read_dir(path)?;
+    Ok(entries.filter_map(|s| Some(s.ok().unwrap().path().to_path_buf())).collect())
 }
 
 
